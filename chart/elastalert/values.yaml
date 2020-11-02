@@ -57,15 +57,15 @@ elasticsearch:
   # whether or not to connect to es_host using TLS
   useSsl: "False"
   # Username if authenticating to ES with basic auth
-  username: "vault:secret-y9t034ebfz9t3/opend-elastic#ELASTIC_USER"
+  username: ""
   # Password if authenticating to ES with basic auth
-  password: "vault:secret-y9t034ebfz9t3/opend-elastic#ELASTIC_PASS"
+  password: ""
   # Specifies an existing secret to be used for the ES username/password
-  credentialsSecret: "vault:secret-y9t034ebfz9t3/opend-elastic#COOKIE_PWD"
+  credentialsSecret: ""
   # The key in elasticsearch.credentialsSecret that stores the ES password
-  credentialsSecretUsernameKey: ""
+  credentialsSecretUsernameKey: "vault:secret-y9t034ebfz9t3/opend-elastic#ELASTIC_USER"
   # The key in elasticsearch.credentialsSecret that stores the ES username
-  credentialsSecretPasswordKey: ""
+  credentialsSecretPasswordKey: "vault:secret-y9t034ebfz9t3/opend-elastic#ELASTIC_PASS"
   # whether or not to verify TLS certificates
   verifyCerts: "False"
   # Enable certificate based authentication
