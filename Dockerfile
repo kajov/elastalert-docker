@@ -5,7 +5,7 @@ LABEL maintainer="Karolis Jovaisas"
 LABEL mainteiner_email="kjovaisas@hms-dev.com"
 LABEL environment="development"
 
-ARG ELASTALERT_VERSION=0.2.0
+ARG ELASTALERT_VERSION=0.2.4
 
 RUN apk --update upgrade && \
     apk add gcc libffi-dev musl-dev python3-dev openssl-dev tzdata libmagic && \
