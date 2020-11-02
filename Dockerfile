@@ -1,9 +1,10 @@
 FROM python:alpine
 
 LABEL description="ElastAlert suitable for Kubernetes and Helm"
-LABEL maintainer="Karolis Jovaisas (kjovaisas@hms-dev.com)"
+LABEL maintainer="Karolis Jovaisas"
+LABEL mainteiner_email="kjovaisas@hms-dev.com"
 
-ARG ELASTALERT_VERSION=0.2.4
+ARG ELASTALERT_VERSION=0.3.0
 
 RUN apk --update upgrade && \
     apk add gcc libffi-dev musl-dev python3-dev openssl-dev tzdata libmagic && \
