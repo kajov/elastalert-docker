@@ -1,7 +1,7 @@
 FROM python:alpine
 
 LABEL description="ElastAlert suitable for Kubernetes and Helm"
-LABEL maintainer="Jason Ertel (jertel at codesim.com)"
+LABEL maintainer="Karolis Jovaisas (kjovaisas@hms-dev.com)"
 
 ARG ELASTALERT_VERSION=0.2.4
 
@@ -15,7 +15,7 @@ RUN pip install elastalert==${ELASTALERT_VERSION} && \
 RUN mkdir -p /opt/elastalert && \
     echo "#!/bin/sh" >> /opt/elastalert/run.sh && \
     echo "set -e" >> /opt/elastalert/run.sh && \
-    echo "elastalert-create-index --config /opt/config/elastalert_config.yaml" >> /opt/elastalert/run.sh && \
+    # echo "elastalert-create-index --config /opt/config/elastalert_config.yaml" >> /opt/elastalert/run.sh && \
     echo "exec elastalert --config /opt/config/elastalert_config.yaml \"\$@\"" >> /opt/elastalert/run.sh && \
     chmod +x /opt/elastalert/run.sh
 

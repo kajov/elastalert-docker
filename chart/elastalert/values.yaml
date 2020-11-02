@@ -21,39 +21,53 @@ realertIntervalMins: ""
 #
 # See https://github.com/Yelp/elastalert/commit/c250100b7be07c68a53789569a86f87193ec37f4 for more details about this differentiation.
 #
-writebackIndex: elastalert
+writebackIndex: qcelastalert
+
+vault:
+  enabled: true
+  security:
+    vault_addr: http://qc-vault.qc-iam.svc.cluster.local:8200
+    vault_role: qcelastalert
+    vault_path: kubernetes
+    vault_skip_verify: true
 
 image:
   # docker image
-  repository: jertel/elastalert-docker
+  repository: kajov/elastalert
   # docker image tag
-  tag: 0.2.4
+  tag: 0.3.0
   pullPolicy: IfNotPresent
 
-resources: {}
+resources:
+  requests:
+    memory: 256Mi
+    cpu: 250m
+  limits:
+    memory: 512Mi
+    cpu: 500m
 
 # Annotations to be added to pods
 podAnnotations: {}
 
 elasticsearch:
   # elasticsearch endpoint e.g. (svc.namespace||svc)
-  host: elasticsearch
+  host: qcopendistro-elasticsearch-client-svc.qc-logging.svc
   # elasticsearch port
   port: 9200
   # whether or not to connect to es_host using TLS
   useSsl: "False"
   # Username if authenticating to ES with basic auth
-  username: ""
+  username: "vault:secret-y9t034ebfz9t3/opend-elastic#ELASTIC_USER"
   # Password if authenticating to ES with basic auth
-  password: ""
+  password: "vault:secret-y9t034ebfz9t3/opend-elastic#ELASTIC_PASS"
   # Specifies an existing secret to be used for the ES username/password
-  credentialsSecret: ""
+  credentialsSecret: "vault:secret-y9t034ebfz9t3/opend-elastic#COOKIE_PWD"
   # The key in elasticsearch.credentialsSecret that stores the ES password
   credentialsSecretUsernameKey: ""
   # The key in elasticsearch.credentialsSecret that stores the ES username
   credentialsSecretPasswordKey: ""
   # whether or not to verify TLS certificates
-  verifyCerts: "True"
+  verifyCerts: "False"
   # Enable certificate based authentication
   # path to a PEM certificate to use as the client certificate
   # clientCert: "/certs/client.pem"
@@ -76,7 +90,8 @@ elasticsearch:
 # Optional env variables for the pod
 optEnv: []
 
-extraConfigOptions: {}
+extraConfigOptions:
+  {}
   # # Options to propagate to all rules, e.g. a common slack_webhook_url or kibana_url
   # # Please note at the time of implementing this value, it will not work for required_locals
   # # Which MUST be set at the rule level, these are: ['alert', 'type', 'name', 'index']
@@ -111,7 +126,6 @@ extraConfigOptions: {}
 #       minutes: 2880
 #     slack_webhook_url: https://hooks.slack.com/services/xxxx
 #     slack_channel_override: '#alerts'
-
 
 # To load Elastalert's rules via secret, uncomment the line below
 #secretRulesName: elastalert-rules-secret
@@ -152,7 +166,8 @@ extraConfigOptions: {}
 # args: ["YOUR", "CUSTOM", "ARGS"]
 
 # rule configurations e.g. (http://elastalert.readthedocs.io/en/latest/)
-rules: {}
+rules:
+  {}
   # deadman_slack: |-
   #   ---
   #   name: Deadman Switch Slack
@@ -214,7 +229,8 @@ affinity: {}
 #     effect: "NoSchedule"
 tolerations: []
 
-extraVolumes: []
+extraVolumes:
+  []
   # - name: smtp-auth
   #   secret:
   #     secretName: elastalert-smtp-auth
@@ -223,7 +239,8 @@ extraVolumes: []
   #         path: smtp_auth.yaml
   #         mode: 0400
 
-extraVolumeMounts: []
+extraVolumeMounts:
+  []
   # - name: smtp-auth
   #   mountPath: /opt/config-smtp/smtp_auth.yaml
   #   subPath: smtp_auth.yaml
